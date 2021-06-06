@@ -21,9 +21,13 @@ exports.handler = async (event, context) => {
 
     await page.goto(pageToScreenshot, { waitUntil: 'networkidle2' });
 
-    const screenshot = await page.screenshot({ encoding: 'binary',fullPage: true })
+    const screenshot = await page.screenshot({ encoding: 'binary',fullPage: true }).then( r => {
+        console.log(Buffer.from(r).toString('base64'))
+        return r
+    }
+        )
 
-    await console.log(Buffer.from(screenshot).toString('base64'))
+
     await browser.close()
   
     return {
