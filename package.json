@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "6cc": "latest",
     "chrome-aws-lambda": "^2.0.0",
     "puppeteer-core": "^2.0.0"
   },

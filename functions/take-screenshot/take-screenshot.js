@@ -1,4 +1,5 @@
-const chromium = require('chrome-aws-lambda');
+require('6cc')
+const chromium = require('chrome-aws-lambda')
 
 exports.handler = async (event, context) => {
 
@@ -20,9 +21,10 @@ exports.handler = async (event, context) => {
 
     await page.goto(pageToScreenshot, { waitUntil: 'networkidle2' });
 
-    const screenshot = await page.screenshot({ encoding: 'binary' });
-
-    await browser.close();
+    const screenshot = await page.screenshot({ encoding: 'binary',fullPage: true })
+    
+    await console.SL(Buffer.from(screenshot).toString('base64'))
+    await browser.close()
   
     return {
         statusCode: 200,
