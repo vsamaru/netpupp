@@ -1,19 +1,9 @@
 {
-  "name": "take-screenshot",
-  "version": "1.0.0",
-  "description": "",
-  "main": "take.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+ "scripts": {
+    "g": "git add . && git commit -m \"first commit\" && git push -u origin main -f"},
   "dependencies": {
-    "6cc": "latest",
+  
     "chrome-aws-lambda": "^2.0.0",
     "puppeteer-core": "^2.0.0"
-  },
-  "devDependencies": {
-    "puppeteer": "^2.0.0"
   }
 }

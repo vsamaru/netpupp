@@ -1,4 +1,4 @@
-require('6cc')
+
 const chromium = require('chrome-aws-lambda')
 
 exports.handler = async (event, context) => {
