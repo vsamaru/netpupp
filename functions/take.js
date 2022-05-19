@@ -1,13 +1,16 @@
-
-const chromium = require('chrome-aws-lambda')
+let chromium = require('chrome-aws-lambda');
+let htmlToJson = require('html-to-json');
 
 exports.handler = async (event, context) => {
 
-    const pageToScreenshot = JSON.parse(event.body).pageToScreenshot;
+    let url = "https://github.com"
 
-    if (!pageToScreenshot) return {
-        statusCode: 400,
-        body: JSON.stringify({ message: 'Page URL not defined' })
+    if (event.httpMethod == "GET") {
+        url = event.queryStringParameters.url || url
+    }
+
+    if (event.httpMethod == "POST") {
+        url = JSON.parse(event.body).url || url
     }
 
     const browser = await chromium.puppeteer.launch({
@@ -15,28 +18,27 @@ exports.handler = async (event, context) => {
         defaultViewport: chromium.defaultViewport,
         executablePath: await chromium.executablePath,
         headless: chromium.headless,
+        ignoreHTTPSErrors: true
     });
-    
+
     const page = await browser.newPage();
 
-    await page.goto(pageToScreenshot, { waitUntil: 'networkidle2' });
+    await page.goto(url, { waitUntil: 'networkidle2' });
 
-    const screenshot = await page.screenshot({ encoding: 'base64',fullPage: true })
-    // .then( r => {
-    //     console.log(Buffer.from(r).toString('base64'))
-    //     return r
-    // }
-    //     )
+    let html = await page.evaluate(() => document.body.innerHTML)
+    let json = await htmlToJson.parse(html, {
+        'images': ['img', function ($img) {
+            return $img.attr('src');
+        }]
+    }, function (err, result) {
+        console.log(result);
+    });
 
+    await browser.close();
 
-    await browser.close()
-  
     return {
         statusCode: 200,
-        body: JSON.stringify({ 
-            message: `Complete screenshot of ${pageToScreenshot}`, 
-            buffer: screenshot 
-        })
+        body: JSON.stringify(json)
     }
 
 }
