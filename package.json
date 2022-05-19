@@ -1,8 +1,8 @@
 {
  "scripts": {
-    "g": "git add . && git commit -m \"first commit\" && git push -u origin main -f"},
+    "g": "git add . && git commit -m \"first commit\" && git push -u origin main -f"
+  },
   "dependencies": {
-  
     "chrome-aws-lambda": "^2.0.0",
     "puppeteer-core": "^2.0.0"
   }
